@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { layout } from "../geo/layout.js";
-import { paint, mat } from "./materials.js";
+import { mat } from "./materials.js";
+import { createGrain } from "./archetypes.js";
 import { makeSegment, tag, addLabel } from "./meshkit.js";
 
 function inside(poly, x, z) {
@@ -37,7 +38,7 @@ function nearVillage(x, z) {
   return false;
 }
 
-/** Passenger rail and a block grain for town-planning land outside the Activation Area. Hidden until Future is on. */
+/** Passenger rail and a grain of building typologies over town-planning land outside the Activation Area. Hidden until Future is on. */
 export function buildFuture(parent, labels) {
   const group = new THREE.Group();
   group.name = "future";
@@ -81,29 +82,33 @@ export function buildFuture(parent, labels) {
         const px = x + (rnd() - 0.5) * step * 0.35;
         const pz = z + (rnd() - 0.5) * step * 0.35;
         if (!inside(band.poly, px, pz) || inActivation(px, pz) || nearVillage(px, pz)) continue;
-        const height = (phase1 ? 12 : 7) + rnd() * (phase1 ? 16 : 8);
-        spots.push({ x: px, z: pz, h: height, w: 46 + rnd() * 70, d: 28 + rnd() * 36 });
+        // Each cell is a block of parcels: 2 × 2 on Phase I, 2 × 1 later. Parcels leave a street margin.
+        const block = phase1 ? 240 : 280;
+        const cols = 2;
+        const rows = phase1 ? 2 : 1;
+        const pw = block / cols;
+        const pd = (phase1 ? block : block * 0.55) / rows;
+        for (let c = 0; c < cols; c++) {
+          for (let r = 0; r < rows; r++) {
+            if (rnd() < (phase1 ? 0.12 : 0.3)) continue;
+            spots.push({
+              x: px - block / 2 + pw * (c + 0.5),
+              z: pz - (pd * rows) / 2 + pd * (r + 0.5),
+              phase1,
+              w: pw - 22 - rnd() * 14,
+              d: pd - 22 - rnd() * 14,
+            });
+          }
+        }
       }
     }
   }
 
-  const mesh = new THREE.InstancedMesh(
-    new THREE.BoxGeometry(1, 1, 1),
-    mat(paint.concreteDark, { roughness: 0.88 }),
-    Math.max(spots.length, 1),
-  );
-  const dummy = new THREE.Object3D();
-  spots.forEach((spot, i) => {
-    dummy.position.set(spot.x, layout.pad + spot.h / 2, spot.z);
-    dummy.scale.set(spot.w, spot.h, spot.d);
-    dummy.rotation.y = 0;
-    dummy.updateMatrix();
-    mesh.setMatrixAt(i, dummy.matrix);
-  });
-  mesh.count = spots.length;
-  mesh.instanceMatrix.needsUpdate = true;
-  tag(mesh, "future-grain");
-  group.add(mesh);
+  // Typologies by phase: towers, slabs and campuses on Phase I; sheds, warehouses and houses later.
+  const grain = createGrain();
+  const typeRnd = mulberry(2026);
+  for (const spot of spots) grain.place(spot, layout.pad, spot.phase1, typeRnd);
+  for (const mesh of grain.build("future-grain")) group.add(mesh);
 
   const home = layout.bands.find((band) => band.id === "tp4") ?? layout.bands[0];
   let cx = 0;

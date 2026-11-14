@@ -18,7 +18,7 @@ export function createShell(handlers) {
   let todIndex = 0;
   let orbiting = false;
 
-  brand.innerHTML = `<div class="gu">ધોલેરા સ્માર્ટ સિટી</div><strong>Dholera SIR</strong><small>India's Greenfield Smart City · 920 km²</small>`;
+  brand.innerHTML = `<a class="home" href="/" title="Back to the guide"><div class="gu">ધોલેરા સ્માર્ટ સિટી</div><strong>Dholera SIR</strong><small>← Back to guide</small></a>`;
 
   // Search input
   const search = document.createElement("input");
@@ -30,6 +30,11 @@ export function createShell(handlers) {
   results.hidden = true;
 
   // Primary Tool Buttons
+  const gameBtn = document.createElement("button");
+  gameBtn.textContent = "▶ Play";
+  gameBtn.title = "Play Dholera Rising: city-ops missions, collectibles and rover driving";
+  gameBtn.className = "play";
+
   const walkBtn = document.createElement("button");
   walkBtn.textContent = "Walk";
   walkBtn.title = "Explore street-level in Activation Area (W/A/S/D)";
@@ -49,7 +54,7 @@ export function createShell(handlers) {
 
   const futureBtn = document.createElement("button");
   futureBtn.textContent = "Future";
-  futureBtn.title = "Preview Master Plan 2040 built-out phase";
+  futureBtn.title = "Preview the published programme: planned and started works";
   futureBtn.setAttribute("aria-pressed", "false");
 
   const soundBtn = document.createElement("button");
@@ -73,6 +78,7 @@ export function createShell(handlers) {
 
   tools.append(
     search,
+    gameBtn,
     walkBtn,
     tourBtn,
     orbitBtn,
@@ -127,6 +133,9 @@ export function createShell(handlers) {
   });
 
   walkBtn.addEventListener("click", () => handlers.onWalk());
+  gameBtn.addEventListener("click", () => {
+    if (handlers.onGame) handlers.onGame();
+  });
   tourBtn.addEventListener("click", () => {
     app.classList.add("flying");
     handlers.onTour();
@@ -234,13 +243,13 @@ export function createShell(handlers) {
         <span class="kpi-num">109</span>
         <span class="kpi-unit">km</span>
         <span class="kpi-label">Expressway</span>
-        <span class="kpi-sub">4-Lane access-controlled (NHAI)</span>
+        <span class="kpi-sub">Open since Mar 2026 (NHAI)</span>
       </div>
       <div class="kpi-card">
         <span class="kpi-num">300</span>
         <span class="kpi-unit">MW</span>
         <span class="kpi-label">Solar Park</span>
-        <span class="kpi-sub">Scalable green energy base</span>
+        <span class="kpi-sub">Tata Power, running since 2022</span>
       </div>
       <div class="kpi-card">
         <span class="kpi-num">50</span>
@@ -264,20 +273,14 @@ export function createShell(handlers) {
         <span class="kpi-num">₹91K</span>
         <span class="kpi-unit">Cr</span>
         <span class="kpi-label">Tata Semiconductor Fab</span>
-        <span class="kpi-sub">India's 1st commercial semiconductor plant</span>
+        <span class="kpi-sub">Tata–PSMC fab · 66.166 ha SEZ notified 2026</span>
       </div>
     </div>
 
     <div class="stats-section">
-      <h3>Zoning & Land Allocation</h3>
-      <div class="zone-bars">
-        <div class="bar-row"><span class="bar-name">Industrial</span><div class="bar-track"><div class="bar-fill" style="width: 42%; background: #c6b396;"></div></div><span class="bar-pct">42%</span></div>
-        <div class="bar-row"><span class="bar-name">Residential</span><div class="bar-track"><div class="bar-fill" style="width: 28%; background: #dcc7a4;"></div></div><span class="bar-pct">28%</span></div>
-        <div class="bar-row"><span class="bar-name">High-Access Corridor</span><div class="bar-track"><div class="bar-fill" style="width: 10%; background: #e4d2ae;"></div></div><span class="bar-pct">10%</span></div>
-        <div class="bar-row"><span class="bar-name">Knowledge & IT</span><div class="bar-track"><div class="bar-fill" style="width: 8%; background: #c5cfc4;"></div></div><span class="bar-pct">8%</span></div>
-        <div class="bar-row"><span class="bar-name">Logistics</span><div class="bar-track"><div class="bar-fill" style="width: 7%; background: #cbbba6;"></div></div><span class="bar-pct">7%</span></div>
-        <div class="bar-row"><span class="bar-name">Recreation & CRZ</span><div class="bar-track"><div class="bar-fill" style="width: 5%; background: #b7c8c6;"></div></div><span class="bar-pct">5%</span></div>
-      </div>
+      <h3>Land use</h3>
+      <p class="fine">DSIRDA does not publish land-use shares in the public record this model uses, so none are printed. See the development plan and GDCR on the DSIRDA site.</p>
+      <p class="fine"><a href="/projects/">Project status tracker</a> · <a href="/sources/">Sources</a></p>
     </div>
   `;
   app.append(statsPanel);
@@ -556,6 +559,10 @@ export function createShell(handlers) {
       walkBtn.textContent = on ? "Fly" : "Walk";
       walkBtn.setAttribute("aria-pressed", String(on));
     },
+    setGameActive(on) {
+      gameBtn.setAttribute("aria-pressed", String(on));
+      gameBtn.textContent = on ? "■ City Ops" : "▶ Play";
+    },
     setOrbiting(on) {
       orbiting = on;
       orbitBtn.setAttribute("aria-pressed", String(on));
@@ -609,7 +616,7 @@ function searchIndex() {
     { id: "expressway", label: "Ahmedabad-Dholera Expressway (109 km)", hay: "expressway highway ahmedabad nhai connectivity transport" },
     { id: "solar", label: "Dholera Solar Park (300 MW)", hay: "solar power renewable clean energy green electricity mahadevpura" },
     { id: "bec", label: "ABCD Building & City Operations (CIOC)", hay: "abcd building admin business exhibition smart operations cioc scada" },
-    { id: "future", label: "Future Master Plan 2040", hay: "future planned programme as planned passenger rail later phases 2040" }
+    { id: "future", label: "Future: the published programme", hay: "future planned programme as planned passenger rail semi high speed later phases" }
   );
   return rows;
 }

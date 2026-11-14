@@ -3,6 +3,8 @@ import { facts, villages, zones, chapters, places, entryFor, tourStops } from ".
 import { layout } from "../src/geo/layout.js";
 import { aimEuler, applyYawPitch, headingOf, yawAlignLocalZ, yawFacing, UP } from "../src/frame.js";
 import { makePrism } from "../src/world/meshkit.js";
+import * as data from "../src/data/dholera.js";
+import { routes, explore } from "../src/site/routes.js";
 
 const failures = [];
 const bad = (message) => failures.push(message);
@@ -93,6 +95,45 @@ if (right.distanceTo(new THREE.Vector3(1, 0, 0)) > 1e-6) bad("forward × up is n
 
 if (layout.blocks.spawn.z <= layout.blocks.bec.z) bad("spawn is not south of ABCD");
 if (layout.canal.polyline[0].z <= layout.blocks.spawn.z) bad("canal is not south of the walk spawn");
+
+// Data integrity: every cited source exists, every project is dated and has a known status.
+const sourceIds = new Set(data.sources.map((s) => s.id));
+if (sourceIds.size !== data.sources.length) bad("duplicate source id");
+const cited = (where, ids = []) => {
+  for (const id of ids) if (!sourceIds.has(id)) bad(`${where}: unknown source ${id}`);
+};
+const isDate = (d) => /^\d{4}(-\d{2}(-\d{2})?)?$/.test(d);
+for (const s of data.sources) {
+  if (!["official", "press"].includes(s.tier)) bad(`source ${s.id}: bad tier`);
+  if (!s.href.startsWith("https://")) bad(`source ${s.id}: href is not https`);
+  if (s.tier === "press" && s.publisher !== "Wikipedia" && !s.date) bad(`press source ${s.id} has no date`);
+}
+const projectIds = new Set();
+for (const p of data.projects) {
+  if (projectIds.has(p.id)) bad(`duplicate project ${p.id}`);
+  projectIds.add(p.id);
+  if (!data.statuses.some((s) => s.id === p.status)) bad(`project ${p.id}: unknown status ${p.status}`);
+  if (!data.categories.some((c) => c.id === p.category)) bad(`project ${p.id}: unknown category`);
+  if (!isDate(p.asOf)) bad(`project ${p.id}: asOf missing`);
+  if (!p.sourceIds?.length) bad(`project ${p.id}: no sources`);
+  if (p.explore && !layout.frames[p.explore]) bad(`project ${p.id}: explore frame ${p.explore} missing`);
+  cited(`project ${p.id}`, p.sourceIds);
+  for (const m of p.milestones || []) {
+    if (!isDate(m.date)) bad(`project ${p.id}: milestone date ${m.date}`);
+    cited(`project ${p.id} milestone`, m.sourceIds);
+  }
+}
+for (const t of data.timeline) {
+  if (t.date !== "Now" && !isDate(t.date)) bad(`timeline date ${t.date}`);
+  if (!t.sourceIds?.length) bad(`timeline ${t.date}: no sources`);
+  cited(`timeline ${t.date}`, t.sourceIds);
+}
+for (const f of data.faq) cited(`faq "${f.q}"`, f.sourceIds);
+for (const c of data.connectivity) cited(`connectivity ${c.mode}`, c.sourceIds);
+cited("allotment", [...data.allotment.sourceIds, ...data.allotment.policies]);
+if (!isDate(data.meta.dataAsOf)) bad("meta.dataAsOf is not a date");
+const paths = new Set([...routes, explore].map((r) => r.path));
+if (paths.size !== routes.length + 1) bad("duplicate route path");
 
 if (failures.length) {
   console.error(failures.join("\n"));

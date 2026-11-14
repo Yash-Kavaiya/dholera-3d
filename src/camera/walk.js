@@ -5,6 +5,18 @@ const heading = new THREE.Vector3();
 const right = new THREE.Vector3();
 const look = new THREE.Vector3();
 
+function insidePoly(poly, x, z) {
+  let hit = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const xi = poly[i].x;
+    const zi = poly[i].z;
+    const xj = poly[j].x;
+    const zj = poly[j].z;
+    if (zi > z !== zj > z && x < ((xj - xi) * (z - zi)) / (zj - zi) + xi) hit = !hit;
+  }
+  return hit;
+}
+
 export function createWalk(camera, layout, colliders) {
   const player = new THREE.Group();
   player.name = "walker";
@@ -24,8 +36,13 @@ export function createWalk(camera, layout, colliders) {
   const radius = 0.45;
   const aa = layout.activation;
 
+  /** Walking is allowed on the whole plinth; the Activation Area sits a little higher. */
+  function surfaceY(x, z) {
+    return x >= aa.minX && x <= aa.maxX && z >= aa.minZ && z <= aa.maxZ ? layout.ground : layout.pad;
+  }
+
   function blocked(x, z) {
-    if (x < aa.minX + 3 || x > aa.maxX - 3 || z < aa.minZ + 3 || z > aa.maxZ - 3) return true;
+    if (!insidePoly(layout.sir, x, z)) return true;
     for (const box of colliders) {
       if (x > box.minX - radius && x < box.maxX + radius && z > box.minZ - radius && z < box.maxZ + radius) return true;
     }
@@ -45,6 +62,13 @@ export function createWalk(camera, layout, colliders) {
     camera.lookAt(look);
   }
 
+  /** Drop the walker at a world position without resetting to spawn (drive exit, fast travel). */
+  function teleport(x, z, yaw) {
+    player.position.set(x, surfaceY(x, z), z);
+    if (typeof yaw === "number") player.rotation.y = yaw;
+    placeCamera();
+  }
+
   function update(dt, keys) {
     const turn = (keys.ArrowLeft || keys.KeyQ ? 1 : 0) - (keys.ArrowRight || keys.KeyE ? 1 : 0);
     player.rotation.y += turn * 1.35 * dt;
@@ -58,10 +82,10 @@ export function createWalk(camera, layout, colliders) {
     const nz = player.position.z + (heading.z * f + right.z * s) * speed * dt;
     if (!blocked(nx, player.position.z)) player.position.x = nx;
     if (!blocked(player.position.x, nz)) player.position.z = nz;
-    player.position.y = layout.ground;
+    player.position.y = surfaceY(player.position.x, player.position.z);
     placeCamera();
   }
 
   reset();
-  return { player, reset, update, yawBy(delta) { player.rotation.y += delta; } };
+  return { player, reset, update, teleport, surfaceY, yawBy(delta) { player.rotation.y += delta; } };
 }

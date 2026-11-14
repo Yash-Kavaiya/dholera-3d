@@ -61,8 +61,22 @@ const activation = buildActivation(groups, labels);
 const futureGroup = buildFuture(scene, labels);
 let futureOn = false;
 
+// The full city beyond the Activation Area lives in its own module. If it is not
+// available yet (or fails), the model still runs with the trunk works.
+let district = null;
+try {
+  const mod = await import("./world/district.js");
+  district = mod.buildDistrict(groups, labels);
+  console.info(`district: ${district.stats?.buildings ?? "?"} buildings, ${district.stats?.drawMeshes ?? "?"} meshes`);
+} catch (error) {
+  console.warn("district layer unavailable:", error);
+}
+
+// Game layer (missions, HUD, rover). Loaded lazily so the guide never blocks on it.
+let game = null;
+
 const fly = createFly(camera);
-const walk = createWalk(camera, layout, activation.colliders);
+const walk = createWalk(camera, layout, [...activation.colliders, ...(district?.colliders ?? [])]);
 walk.player.visible = false;
 scene.add(walk.player);
 const focus = createFocus(camera, fly);
@@ -178,6 +192,14 @@ const shell = createShell({
     if (mode === "walk") leaveWalk(true);
     else enterWalk();
   },
+  onGame() {
+    if (!game) {
+      showToast("City Ops is still loading…");
+      return;
+    }
+    if (game.active) game.stop();
+    else game.start();
+  },
   onOrbit(enable) {
     isOrbiting = enable;
     if (isOrbiting) {
@@ -251,6 +273,89 @@ const tour = createTour(tourStops, (stop) => {
   goFrame(stop.focus, 6.2, true);
 });
 
+// ── City Ops game layer ──────────────────────────────────────────────────────
+let gameDriving = false;
+try {
+  const mod = await import("./game/index.js");
+  game = mod.createGame({
+    scene,
+    camera,
+    layout,
+    groups,
+    colliders: [...activation.colliders, ...(district?.colliders ?? [])],
+    places: district?.places ?? {},
+    getMode: () => mode,
+    enterWalk: () => enterWalk(),
+    leaveWalk: () => leaveWalk(false),
+    restoreWalk: (x, z, yaw) => restoreWalk(x, z, yaw),
+    flyToPoint: (x, z, alt = 600) => {
+      tour.stop();
+      focus.cancel();
+      if (mode === "walk") leaveWalk(false);
+      mode = "fly";
+      focus.go(
+        {
+          position: { x: x + 260, y: Math.max(alt, 380), z: z + 340 },
+          target: { x, y: layout.ground, z },
+        },
+        1.8,
+      );
+    },
+    toast: showToast,
+    setTimeOfDay: (tod) => applyLightingMode(tod),
+    setFuture: (on) => {
+      futureOn = on;
+      setFuture(on);
+      futureGroup.visible = on;
+    },
+    onGameMode: (on) => {
+      document.body.classList.toggle("game-on", on);
+      shell.setGameActive(on);
+      if (on) {
+        tour.stop();
+        focus.cancel();
+        isOrbiting = false;
+        shell.setOrbiting(false);
+      }
+    },
+  });
+  console.info("City Ops game layer ready");
+} catch (error) {
+  console.warn("game layer unavailable:", error);
+}
+
+// Deep links from the guide: /explore/#airport opens that entry and flies to it.
+/** Testing/deep-link helper: jump the camera to a world view with no animation. */
+function viewAt(x, y, z, tx, ty, tz) {
+  tour.stop();
+  focus.cancel();
+  isOrbiting = false;
+  if (mode === "walk") leaveWalk(false);
+  mode = "fly";
+  camera.position.set(x, y, z);
+  const look = aimEuler({ x, y, z }, { x: tx, y: ty, z: tz });
+  fly.setYawPitch(look.yaw, look.pitch);
+  return { x, y, z };
+}
+
+/** Testing/deep-link helper: jump the camera to a layout frame. */
+function snapFrame(id) {
+  const frame = layout.frames[id];
+  if (!frame) return false;
+  viewAt(frame.position.x, frame.position.y, frame.position.z, frame.target.x, frame.target.y, frame.target.z);
+  return true;
+}
+
+function openFromHash() {
+  const id = decodeURIComponent(location.hash.slice(1));
+  if (!id || !layout.frames[id]) return;
+  document.querySelector("#app").classList.add("flying");
+  shell.openId(id);
+  snapFrame(id);
+}
+window.addEventListener("hashchange", openFromHash);
+openFromHash();
+
 function enterWalk() {
   tour.stop();
   focus.cancel();
@@ -270,6 +375,17 @@ function leaveWalk(resumeFly) {
   walk.player.visible = false;
   shell.setWalking(false);
   if (!resumeFly) return;
+}
+
+/** Enter walk mode at an arbitrary world position (drive exit, fast travel) instead of the spawn. */
+function restoreWalk(x, z, yaw) {
+  tour.stop();
+  focus.cancel();
+  isOrbiting = false;
+  mode = "walk";
+  walk.player.visible = true;
+  walk.teleport(x, z, typeof yaw === "number" ? yaw : undefined);
+  shell.setWalking(true);
 }
 
 function goFrame(id, seconds, fromTour) {
@@ -296,6 +412,9 @@ function cancelAuto() {
 window.addEventListener("keydown", (event) => {
   if (event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement) return;
   keys[event.code] = true;
+
+  // City Ops gets first refusal: E interacts, F exits the rover, J/P open logs.
+  if (game && game.handleKey(event)) return;
 
   if (event.code === "KeyH") {
     shell.toggleHelp();
@@ -350,7 +469,7 @@ canvas.addEventListener("pointermove", (event) => {
 });
 
 canvas.addEventListener("pointerup", (event) => {
-  if (dragged < 5) {
+  if (dragged < 5 && !game?.active) {
     const id = pickAt(event, camera, scene);
     if (id) shell.openId(id);
   }
@@ -358,7 +477,7 @@ canvas.addEventListener("pointerup", (event) => {
 });
 
 canvas.addEventListener("wheel", (event) => {
-  if (mode !== "walk") {
+  if (mode !== "walk" && !gameDriving) {
     event.preventDefault();
     cancelAuto();
     fly.elevate(-Math.sign(event.deltaY) * (event.deltaY > 0 ? 1 : 1) * Math.min(900, Math.abs(event.deltaY)));
@@ -454,7 +573,12 @@ function frame(now) {
   then = now;
   const focusing = focus.update(dt);
 
-  if (mode === "tour") {
+  // City Ops runs every frame: HUD, objective marker, shards, and the rover camera.
+  gameDriving = game ? game.update(dt, keys, mode) === true : false;
+
+  if (gameDriving) {
+    // The game owns the camera while driving.
+  } else if (mode === "tour") {
     tour.update(dt);
   } else if (isOrbiting) {
     orbitAngle += dt * 0.12;
@@ -468,6 +592,7 @@ function frame(now) {
   }
 
   region.update(now * 0.001);
+  if (district?.update) district.update(now * 0.001);
 
   // Water animation
   if (terrain.water) {
@@ -487,12 +612,12 @@ function frame(now) {
   terrain.sky.position.copy(camera.position);
   updateFog();
   updateLabels();
-  drawMinimap(mapCanvas, layout, camera);
+  drawMinimap(mapCanvas, layout, camera, game ? game.getMinimapBlips() : []);
 
   // HUD stats
   camera.getWorldDirection(viewDir);
   const headingDeg = (Math.atan2(viewDir.x, -viewDir.z) * 180) / Math.PI;
-  const currentMode = mode === "walk" ? "Walk" : isOrbiting ? "Orbit" : mode === "tour" ? "Tour" : "Fly";
+  const currentMode = gameDriving ? "Drive" : mode === "walk" ? "Walk" : isOrbiting ? "Orbit" : mode === "tour" ? "Tour" : "Fly";
   shell.updateHud(camera.position.y, currentMode, headingDeg);
 
   renderer.render(scene, camera);
@@ -563,4 +688,19 @@ function selfTest() {
   return failures;
 }
 
-window.__dholera = { selfTest, layout, camera, scene, groups };
+window.__dholera = {
+  selfTest,
+  layout,
+  camera,
+  scene,
+  groups,
+  renderer,
+  viewAt,
+  snapFrame,
+  get district() {
+    return district;
+  },
+  get game() {
+    return game;
+  },
+};

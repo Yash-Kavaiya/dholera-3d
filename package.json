@@ -3,15 +3,20 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "pages": "node scripts/build-pages.mjs",
+    "dev": "node scripts/build-pages.mjs && vite",
+    "build": "node scripts/check.mjs && node scripts/build-pages.mjs && vite build",
     "preview": "vite preview --strictPort --port 4173",
-    "check": "node scripts/check.mjs"
+    "check": "node scripts/check.mjs",
+    "fetch:latest": "node scripts/fetch-latest.mjs"
   },
   "dependencies": {
     "three": "^0.170.0"
   },
   "devDependencies": {
     "vite": "^6.3.5"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

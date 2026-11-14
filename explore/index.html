@@ -3,8 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dholera — a schematic model of the Special Investment Region</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23b5693a'/%3E%3C/svg%3E" />
+    <title>Explore in 3D — Dholera SIR</title>
+    <link rel="canonical" href="https://dholera-3d.vercel.app/explore/" />
+    <meta property="og:title" content="Explore Dholera SIR in 3D" />
+    <meta property="og:description" content="Fly over the 920 km² region, the 422 km² town-planning area, and walk the 22.54 km² Activation Area." />
+    <meta property="og:image" content="https://dholera-3d.vercel.app/og.png" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#b5693a" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta
       name="description"
       content="An unofficial Three.js model of Dholera SIR: the 920 km² region, the town-planning area, and the Activation Area."
@@ -39,6 +47,8 @@
       <p id="hint"></p>
       <section id="arrive"></section>
     </div>
-    <script type="module" src="/src/main.js"></script>
+    <noscript><div id="webgl-fallback"><p>The 3D model needs JavaScript and WebGL. <a href="/">Read the guide instead</a>.</p></div></noscript>
+    <script src="/webgl-check.js"></script>
+    <script type="module" src="/src/explore.js"></script>
   </body>
 </html>

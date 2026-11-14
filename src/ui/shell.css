@@ -90,9 +90,21 @@ body.dusk #labels button { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8); }
   color: var(--copper);
 }
 
+#tools button.play {
+  border-color: var(--copper);
+  color: var(--copper);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+#tools button.play[aria-pressed="true"] {
+  background: var(--copper);
+  color: var(--paper);
+}
+
 #chapters {
   position: absolute;
-  top: 78px;
+  top: var(--chrome, 78px);
   left: 18px;
   right: 250px;
   display: flex;
@@ -104,7 +116,7 @@ body.dusk #labels button { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8); }
 
 #panel {
   position: absolute;
-  top: 124px;
+  top: calc(var(--chrome, 78px) + 46px);
   left: 18px;
   width: min(420px, calc(100vw - 36px));
   max-height: calc(100vh - 168px);
@@ -559,3 +571,10 @@ body.dusk #hud {
   }
 }
 
+
+#brand a.home { color: inherit; text-decoration: none; display: block; }
+#brand a.home:hover small, #brand a.home:focus-visible small { color: var(--copper); }
+#webgl-fallback { position: fixed; inset: 0; display: grid; place-items: center; padding: 24px; background: var(--paper); color: var(--ink); text-align: center; z-index: 10000; }
+#webgl-fallback a { color: var(--copper); }
+#brand { flex-shrink: 0; }
+#brand a.home strong { white-space: nowrap; }

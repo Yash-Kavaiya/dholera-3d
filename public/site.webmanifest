@@ -1,0 +1,9 @@
+{
+  "name": "Dholera SIR — an independent guide",
+  "short_name": "Dholera SIR",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f3eee4",
+  "theme_color": "#b5693a",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

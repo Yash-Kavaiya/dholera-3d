@@ -21,7 +21,10 @@ function getMinimapBounds(layout) {
   return { minX, maxX, minZ, maxZ };
 }
 
-export function drawMinimap(canvas, layout, camera) {
+/**
+ * @param {Array<{x:number,z:number,kind:string}>} [blips] game markers: kind "mission" | "shard" | "player".
+ */
+export function drawMinimap(canvas, layout, camera, blips = []) {
   const ctx = canvas.getContext("2d");
   const w = canvas.width;
   const h = canvas.height;
@@ -53,12 +56,52 @@ export function drawMinimap(canvas, layout, camera) {
   ctx.strokeStyle = "#b5693a";
   ctx.lineWidth = 3;
   ctx.strokeRect(X(aa.minX), Y(aa.minZ), X(aa.maxX) - X(aa.minX), Y(aa.maxZ) - Y(aa.minZ));
+  ctx.fillStyle = "rgba(181, 105, 58, 0.12)";
+  ctx.fillRect(X(aa.minX), Y(aa.minZ), X(aa.maxX) - X(aa.minX), Y(aa.maxZ) - Y(aa.minZ));
 
   // Airport point
   ctx.fillStyle = "#1c1915";
   ctx.beginPath();
   ctx.arc(X(layout.airport.x), Y(layout.airport.z), 5, 0, Math.PI * 2);
   ctx.fill();
+
+  // Game blips
+  const pulse = 0.5 + 0.5 * Math.sin(performance.now() / 320);
+  for (const blip of blips) {
+    if (!blip || !Number.isFinite(blip.x) || !Number.isFinite(blip.z)) continue;
+    const bx = X(blip.x);
+    const by = Y(blip.z);
+    if (blip.kind === "mission") {
+      ctx.strokeStyle = "#b5693a";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(bx, by, 9 + pulse * 6, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = "#e08a4e";
+      ctx.beginPath();
+      ctx.arc(bx, by, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#fff8ee";
+      ctx.beginPath();
+      ctx.arc(bx, by, 2.4, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (blip.kind === "shard") {
+      ctx.save();
+      ctx.translate(bx, by);
+      ctx.rotate(Math.PI / 4);
+      ctx.fillStyle = "#3f93a8";
+      ctx.fillRect(-3.6, -3.6, 7.2, 7.2);
+      ctx.strokeStyle = "rgba(255,255,255,0.8)";
+      ctx.lineWidth = 1;
+      ctx.strokeRect(-3.6, -3.6, 7.2, 7.2);
+      ctx.restore();
+    } else {
+      ctx.fillStyle = "#3f93a8";
+      ctx.beginPath();
+      ctx.arc(bx, by, 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
 
   // Camera frustum / heading pointer
   camera.getWorldDirection(dir);

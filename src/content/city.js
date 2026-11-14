@@ -1,62 +1,18 @@
 /** Published figures and labels. Geometry in src/geo/layout.js must use these numbers. */
+import { facts, disclaimer, villages, timeline, sources } from "../data/dholera.js";
 
-export const facts = Object.freeze({
-  sirKm2: 920,
-  developableKm2: 422,
-  phase1Km2: 153,
-  activationKm2: 22.54,
-  roadsKm: 72,
-  canalKm: 6.6,
-  expresswayKm: 109,
-  wtpMld: 50,
-  wtpMldMax: 150,
-  stpMld: 10,
-  stpMldMax: 30,
-  cetpMld: 20,
-  cetpMldMax: 60,
-  wtpOffsetKm: 5,
-  esrCount: 9,
-  mbrCount: 2,
-});
-
-export const disclaimer =
-  "Unofficial schematic model. Not a survey, not a government site, and not an offer of land. Confirm boundaries, rules, and allotment with DSIRDA and DICDL.";
-
-export const villages = [
-  { id: "ambli", name: "Ambli", lat: 22.3258371, lon: 72.230266, pin: "osm", note: "The OpenStreetMap node is a sub-centre labelled Ambli. It marks a place in the village, not a surveyed centre." },
-  { id: "bavaliyari", name: "Bavaliyari", lat: 22.0751785, lon: 72.1175549, pin: "osm", note: "OpenStreetMap place node." },
-  { id: "bhadiyad", name: "Bhadiyad", lat: 22.2800596, lon: 72.1677497, pin: "osm", note: "OpenStreetMap place node." },
-  { id: "bhangadh", name: "Bhangadh", lat: 22.1234135, lon: 72.211734, pin: "osm", note: "OpenStreetMap place node." },
-  { id: "bhimtalav", name: "Bhimtalav", lat: 22.2335455, lon: 72.2046755, pin: "osm", note: "OpenStreetMap node named Bhimtalav, near the Dholera village node." },
-  { id: "cher", name: "Cher", lat: 22.2537791, lon: 72.0919701, pin: "osm", note: "OpenStreetMap place node." },
-  { id: "dholera", name: "Dholera", lat: 22.2495856, lon: 72.1959892, pin: "osm", note: "This node is the origin of the model. East is +X. North is −Z. One unit is one metre." },
-  { id: "gogla", name: "Gogla", lat: 22.2914227, lon: 72.2378826, pin: "osm", note: "OpenStreetMap place node." },
-  { id: "gorasu", name: "Gorasu", lat: 22.2568111, lon: 72.1337168, pin: "osm", note: "OpenStreetMap place node." },
-  { id: "hebatpur", name: "Hebatpur", lat: 22.1398631, lon: 72.1004929, pin: "osm", note: "OpenStreetMap place node." },
-  { id: "kadipur", name: "Kadipur", lat: 22.276348, lon: 72.2026384, pin: "osm", note: "The OpenStreetMap name at this node sits on the Ahmedabad–Dholera Expressway. The Activation Area rectangle is centred near it and is still only a schematic footprint." },
-  { id: "khun", name: "Khun", lat: 22.2449925, lon: 72.2282455, pin: "osm", note: "OpenStreetMap place node." },
-  { id: "mahadevpura", name: "Mahadevpura", lat: 22.1461861, lon: 72.2388088, pin: "osm", note: "OpenStreetMap names Dholera Solar Park at this Mahadevpura node. The dark field is drawn here. Its edges are schematic." },
-  { id: "mingalpur", name: "Mingalpur", lat: 22.0998684, lon: 72.2055728, pin: "osm", note: "OpenStreetMap place node." },
-  { id: "mundi", name: "Mundi", lat: 22.1980259, lon: 72.1736604, pin: "osm", note: "OpenStreetMap place node." },
-  { id: "otariya", name: "Otariya", lat: 22.237163, lon: 72.1347276, pin: "osm", note: "OpenStreetMap place node." },
-  { id: "panchi", name: "Panchi", lat: 22.175257, lon: 72.1734842, pin: "osm", note: "OpenStreetMap place node." },
-  { id: "rahtalav", name: "Rahtalav", lat: 22.205167, lon: 72.2495084, pin: "osm", note: "OpenStreetMap place node, toward the gulf side of the village cluster." },
-  { id: "sandhida", name: "Sandhida", lat: 22.1868428, lon: 72.1539264, pin: "osm", note: "OpenStreetMap place node." },
-  { id: "sangasar", name: "Sangasar", lat: null, lon: null, pin: "none", note: "The name is on published lists of the 22 villages. No OpenStreetMap centre was found, so Sangasar is listed and not pinned." },
-  { id: "sodhi", name: "Sodhi", lat: 22.218913, lon: 72.0680657, pin: "osm", note: "OpenStreetMap place node, on the inland side of the cluster." },
-  { id: "zankhi", name: "Zankhi", lat: 22.1011036, lon: 72.1862152, pin: "osm", note: "OpenStreetMap place node. Also spelled Zakhi in some lists." },
-];
+export { facts, disclaimer, villages, timeline, sources };
 
 export const zones = [
   { id: "zone-industrial", title: "Industrial", paragraphs: ["The Activation Area is described as an industrial zone with large contiguous parcels and plug-in utilities. Across the wider plan, industry is one of the main uses.", "This wash is a schematic extent. It is not the development-plan boundary, and it has no plot prices."] },
-  { id: "zone-residential", title: "Residential", paragraphs: ["Residential land is part of the published mix, in the Activation Area and in later town-planning schemes. DSIRDA allots residential plots by auction or tender, not by the model you are looking at.", "The blocks inside the Activation Area are translucent because those buildings are not being claimed as finished."] },
+  { id: "zone-residential", title: "Residential", paragraphs: ["Residential land is part of the published mix, in the Activation Area and in later town-planning schemes. DSIRDA allots residential plots by auction or tender, not by the model you are looking at.", "The housing blocks inside the Activation Area are drawn solid in this city model; they interpret the initiated housing and are not a floor plan or an allotment map."] },
   { id: "zone-city", title: "City centre", paragraphs: ["A city-centre use sits in the development plan alongside knowledge, logistics, and the high-access corridor. The pale patch marks that use.", "Its place on this model is schematic. The Administrative and Business Centre you can walk to is a real project inside the Activation Area, and it is not the whole city centre."] },
   { id: "zone-knowledge", title: "Knowledge and IT", paragraphs: ["Knowledge and IT is a named use in the development plan. Gujarat’s IT / ITeS policy is one of the state policies DSIRDA points investors to.", "The patch is a catalogue of the use, drawn on the model so you can fly to it. It is not a surveyed campus."] },
   { id: "zone-access", title: "High access corridor", paragraphs: ["The high-access corridor is the planned intense mixed-use band, tied to the main roads. On a real plan it follows the corridor. Here it is a patch near the schematic expressway.", "FAR and height depend on the General Development Control Regulations and the road in front of a plot. This model does not print those numbers."] },
   { id: "zone-logistics", title: "Logistics", paragraphs: ["Logistics land is meant to sit on the freight and highway network: the expressway, the Bhimnath–Dholera freight line, and the highways already named by DSIRDA.", "The patch is schematic. The freight line drawn to the west is a straight corridor, not a surveyed track."] },
   { id: "zone-tourism", title: "Tourism and resorts", paragraphs: ["Tourism is a published use, on the gulf side of a coastal city. The strip is drawn toward the water for that reason.", "It is not a resort map, and the coast in this model is the edge of the schematic plinth, not the notified shoreline."] },
   { id: "zone-sports", title: "Sports and recreation", paragraphs: ["Sports and recreation is a separate use in the development plan, distinct from neighbourhood open space.", "The green patch marks the use. It does not locate a stadium."] },
-  { id: "zone-public", title: "Public and social facilities", paragraphs: ["The Activation Area plan reserves land for healthcare, education, a police station, a fire station, and other social uses. DSIRDA says work has started on a hospital, a school, a fire station, a food court, housing, a guest house, and a hotel.", "Those buildings are the translucent ones inside the Activation Area. This regional patch is the wider use, and it is schematic."] },
+  { id: "zone-public", title: "Public and social facilities", paragraphs: ["The Activation Area plan reserves land for healthcare, education, a police station, a fire station, and other social uses. DSIRDA says work has started on a hospital, a school, a fire station, a food court, housing, a guest house, and a hotel.", "Those buildings are drawn solid inside the Activation Area. This regional patch is the wider use, and it is schematic."] },
   { id: "zone-solar", title: "Solar", paragraphs: ["A 300 MW solar park is part of the public project record. OpenStreetMap places a feature named Dholera Solar Park at Mahadevpura, and the dark field is drawn there.", "Panel rows and the field’s edges are schematic. The pin is the map node."] },
   { id: "zone-agriculture", title: "Agriculture and later phases", paragraphs: ["Most of the 920 km² is not in the first construction phase. DSIRDA says later areas will be taken up as town-planning schemes are approved.", "The outer wash is that remainder. It is not a map of farms or of plots for sale."] },
   { id: "zone-crz", title: "Coastal belt", paragraphs: ["The gulf is the eastern condition of Dholera. A coastal regulation belt is part of how the real plan treats that edge.", "This strip follows the eastern side of the schematic plinth. It is not the notified coastal regulation line."] },
@@ -70,7 +26,7 @@ export const chapters = [
     title: "Dholera",
     paragraphs: [
       "A planning model of the Special Investment Region: the whole 920 km² plinth, the 422 km² town-planning area, and the 22.54 km² Activation Area where the trunk works already stand.",
-      "Solid forms are works DSIRDA describes as built. Translucent forms are planned or only started. The plinth is sized to the published area. It is not the notified boundary.",
+      "Solid forms are the city as this model interprets it built out: an illustration, not a survey. Future adds the later town-planning phases. The plinth is sized to the published area. It is not the notified boundary.",
     ],
     links: [
       { id: "gulf", label: "Gulf of Khambhat" },
@@ -166,9 +122,9 @@ export const chapters = [
     kicker: "Roads, rail, air, sea",
     title: "How you get there",
     paragraphs: [
-      "National and state highways already tie the site to Ahmedabad, Rajkot, Mundra, Kandla, Pipavav, Dahej, Hazira, Bhavnagar, Delhi, and Mumbai. NH 751, the Ahmedabad–Bhavnagar road, passes through the industrial city. A separate access-controlled expressway, about 109 km and four lanes, is being built by NHAI between Ahmedabad and Dholera.",
-      "The Dholera International Airport is a company of the Airports Authority of India, the Government of Gujarat, and NICDIT. DSIRDA places it about 20 km from Dholera, with a link to the expressway. The FAQ still names Bhavnagar (60 km), Ahmedabad (125 km), and Vadodara (145 km) as the nearest existing airports.",
-      "A Bhimnath–Dholera freight line is under implementation by Western Railway, toward the Dedicated Freight Corridor near Ahmedabad. A semi-high-speed passenger line is planned from Ahmedabad along the expressway. The nearest port in the FAQ is Pipavav at 200 km, then Kandla at 300 km and Mundra at 350 km.",
+      "National and state highways already tie the site to Ahmedabad, Rajkot, Mundra, Kandla, Pipavav, Dahej, Hazira, Bhavnagar, Delhi, and Mumbai. NH 751, the Ahmedabad–Bhavnagar road, passes through the industrial city. A separate access-controlled expressway, about 109 km and four lanes, was built by NHAI between Ahmedabad and Dholera. Press reports date its inauguration to 31 March 2026. The DSIRDA FAQ, last updated in August 2026, still calls it under implementation.",
+      "The Dholera International Airport is a company of the Airports Authority of India, the Government of Gujarat, and NICDIT. DSIRDA places it about 20 km from Dholera, with a link to the expressway. An AAI aircraft made a trial landing there on 5 June 2026. It is not yet open to commercial flights. The FAQ still names Bhavnagar (60 km), Ahmedabad (125 km), and Vadodara (145 km) as the nearest existing airports.",
+      "A Bhimnath–Dholera freight line is under implementation by Western Railway, toward the Dedicated Freight Corridor near Ahmedabad. The Sarkhej–Dholera semi high-speed passenger line was approved by the Union Cabinet in May 2026, and Western Railway invited bids for it in August 2026. The nearest port in the FAQ is Pipavav at 200 km, then Kandla at 300 km and Mundra at 350 km.",
     ],
     links: [
       { id: "expressway", label: "Expressway" },
@@ -191,10 +147,10 @@ export const chapters = [
   {
     id: "time",
     label: "Time",
-    kicker: "2008 onward",
+    kicker: "2008 to 2026",
     title: "How it got this far",
     paragraphs: [
-      "The sequence below is the one DSIRDA publishes. Later phases still wait on town-planning approval. The Activation Area is the part where the trunk contracts have already been built.",
+      "The sequence to 2016 is the one DSIRDA publishes. The rows after it are dated public records and press reports, listed on the Sources page. Later phases still wait on town-planning approval.",
     ],
     links: [{ id: "activation", label: "See the Activation Area" }],
   },
@@ -218,33 +174,6 @@ chapters.find((c) => c.id === "villages").links = villages.map((v) => ({
   label: v.pin === "osm" ? v.name : `${v.name} (no pin)`,
 }));
 
-export const timeline = [
-  { year: "2008", text: "Approved as a node of the Delhi–Mumbai Industrial Corridor, in May." },
-  { year: "2009", text: "Gujarat passes the Special Investment Region Act." },
-  { year: "2010", text: "DSIRDA is established as the regional development authority." },
-  { year: "2011", text: "Master planning work starts." },
-  { year: "2012", text: "An ICT masterplan is prepared." },
-  { year: "2013", text: "Programme managers are appointed." },
-  { year: "2014", text: "Environment clearance is received." },
-  { year: "2016", text: "DICDL is formed. Implementation starts on TP 2A and 4A, the 22.54 km² Activation Area. DICDL is 51% Government of Gujarat, through DSIRDA, in land, and 49% the Government of India, through NICDIT, in cash." },
-  { year: "Now", text: "DSIRDA says trunk infrastructure in the Activation Area has been developed. Later area will be taken up as town-planning schemes are approved. The Activation Area is also described as a Semicon City under the Gujarat Semiconductor Policy of 2022, aimed at semiconductors, their suppliers, and electronics manufacturing." },
-];
-
-export const sources = [
-  { title: "DSIRDA FAQ", href: "https://dholera.gujarat.gov.in/faqs", note: "Area, Activation Area, ABCD, utilities, connectivity, allotment, seasons, policies." },
-  { title: "Planning", href: "https://dholera.gujarat.gov.in/planning", note: "22 villages, 422 km² in TP1–TP6, Phase I of 153 km²." },
-  { title: "About the authority", href: "https://dholera.gujarat.gov.in/about_us", note: "DICDL, NICDC, and the town-planning programme." },
-  { title: "Land pricing", href: "https://dholera.gujarat.gov.in/land_pricing", note: "Official pricing. Not copied into this model." },
-  { title: "Land allotment policy", href: "https://dholera.gujarat.gov.in/web/document/download?model=website.documents&field=file&filename_field=Land_Allotment_Policy.pdf&id=1", note: "PDF linked from the FAQ." },
-  { title: "General Development Control Regulations", href: "https://dholera.gujarat.gov.in/web/document/download?model=website.documents&field=file&filename_field=3.-DP-Report-2-GDCR.pdf&id=33", note: "PDF linked from the FAQ. FAR and height live here." },
-  { title: "Investor Facilitation Portal", href: "https://ifp.gujarat.gov.in/", note: "Single window for approvals." },
-  { title: "Gujarat Semiconductor Policy 2022", href: "https://dst.gujarat.gov.in/Home/GujaratSemiconductorPolicy", note: "Linked from the DSIRDA FAQ." },
-  { title: "Gujarat Electronics Policy 2022–28", href: "https://dst.gujarat.gov.in/Home/GujaratElectronicsPolicy", note: "Linked from the DSIRDA FAQ." },
-  { title: "Gujarat IT / ITeS Policy 2022–27", href: "https://dst.gujarat.gov.in/Home/gjstateititespolicy", note: "Linked from the DSIRDA FAQ." },
-  { title: "Aatmanirbhar Gujarat Scheme for Industries 2022", href: "https://ic.gujarat.gov.in/documents/aatmanirbhar-gujarat/pdf/pdf.pdf", note: "Linked from the DSIRDA FAQ." },
-  { title: "OpenStreetMap place nodes", href: "https://www.openstreetmap.org/", note: "Village pins, the solar-park name at Mahadevpura, the airport pin, Kadipur on the expressway, Adhelai, and a Bhimnath node in Botad." },
-];
-
 const place = (title, kicker, paragraphs, links = []) => ({ title, kicker, paragraphs, links });
 
 export const places = {
@@ -257,7 +186,7 @@ export const places = {
     "DSIRDA is the planning authority. DICDL, the special-purpose vehicle, builds infrastructure and allots land inside that plan.",
   ]),
   activation: place("Activation Area", "22.54 km² · TP 2A and 4A", [
-    "First construction phase. Trunk roads, plants, canal, substations, and the ABCD buildings are the solid parts. Housing, the school, the hospital, the fire station, the food court, the guest house, the hotel, and the Semicon City district are translucent.",
+    "First construction phase. Trunk roads, plants, canal, substations and the ABCD buildings are drawn solid, alongside a modelled fabric of housing, civic, commercial and industrial buildings. The city you see is an interpretation, not a survey.",
     "The rectangle’s area matches the published 22.54 km². Its corners are not the sanctioned scheme corners.",
   ]),
   "aa-roads": place("Internal roads", "72 km of centreline", [
@@ -269,7 +198,7 @@ export const places = {
     "It is not a plot plan. Allotment is 1 acre to 330 acres in the public note, by the official policy.",
   ]),
   "aa-residential": place("Residential ground", "Illustrative tint", [
-    "Residential use is part of the Activation Area. The translucent blocks are the housing DSIRDA says has been initiated. They are not floor plans.",
+    "Residential use is part of the Activation Area. The solid housing blocks are this model's interpretation of the housing DSIRDA says has been initiated. They are not floor plans.",
   ]),
   "aa-commercial": place("Commercial ground", "Illustrative tint", [
     "The ABCD buildings sit on this tint: administration, exhibitions, and the city operations room. Commercial plots beyond those buildings are not drawn as a cadastre.",
@@ -309,34 +238,35 @@ export const places = {
     "The larger yard stands inside the Activation Area. A second, smaller solid yard is the other built substation. Neither is a measured electrical layout.",
   ]),
   "sub-getco": place("GETCO substation", "Being built", [
-    "A 220 kV substation by GETCO is described as being developed, so the second source of power is still in progress. It is drawn translucent, unlike the Torrent yards.",
+    "A 220 kV substation by GETCO is described as being developed, so the second source of power is still in progress. It is drawn as a typical solid yard, a control building, transformers and gantries. The Future toggle adds the later-phase grain beyond the Activation Area.",
   ]),
-  expressway: place("Ahmedabad–Dholera Expressway", "109 km", [
-    "A four-lane, access-controlled expressway of about 109 km, implemented by NHAI, separate from NH 751. This model shows the approach across the map, not every kilometre back to Sarkhej.",
+  expressway: place("Ahmedabad–Dholera Expressway", "109 km · Open since March 2026", [
+    "A four-lane, access-controlled expressway of about 109 km, built by NHAI, separate from NH 751. Press reports date its inauguration to 31 March 2026. This model shows the approach across the map, not every kilometre back to Sarkhej.",
     "The line passes through the Kadipur node, where OpenStreetMap names the expressway, and runs toward Adhelai, the published southern end. The bends between those pins are drawn, not surveyed. The stroke is much wider than the carriageway so it can be read from above the whole region.",
   ]),
   nh751: place("NH 751", "Ahmedabad–Bhavnagar", [
     "The existing Ahmedabad–Bhavnagar national highway passes through Dholera Industrial City. It is not the new expressway.",
     "The grey line is a north–south corridor through the Dholera village node. It is not the highway centreline.",
   ]),
-  airport: place("Dholera International Airport", "About 20 km", [
+  airport: place("Dholera International Airport", "About 20 km · Trial landing June 2026", [
     "Dholera International Airport Company Limited is a venture of the Airports Authority of India, the Government of Gujarat, and NICDIT. DSIRDA describes an aviation hub about 20 km from Dholera, linked to the expressway, and still lists Ahmedabad, Vadodara, and Bhavnagar as the nearest existing airports.",
+    "An AAI aircraft made a trial landing on 5 June 2026. No commercial opening date has been published.",
     "The pin is the OpenStreetMap node named Dholera International Airport (under construction). Runway, terminal, cargo shed, and tower are a schematic airfield, not the construction drawings. The distance from the Dholera village node is printed on the pin from this projection.",
   ]),
   "airport-link": place("Airport link", "Schematic spur", [
     "DSIRDA says the airport will meet the expressway by a dedicated access road. This spur is that connection, drawn from the expressway line to the airport pin. It is not the notified link alignment.",
   ]),
-  solar: place("Solar park", "300 MW", [
-    "Public project updates include a 300 MW solar park. The field is centred on the OpenStreetMap feature named Dholera Solar Park at Mahadevpura.",
+  solar: place("Solar park", "300 MW running", [
+    "Tata Power commissioned a 300 MW plant with single-axis trackers at Dholera in April 2022. Reference articles describe a much larger park planned, 4,400 MW, with 1,000 MW in its first phase. The field is centred on the OpenStreetMap feature named Dholera Solar Park at Mahadevpura.",
     "Rows of panels stand in for the plant. Their spacing and the fence line are not the built layout.",
   ]),
-  "passenger-rail": place("Passenger rail", "Planned", [
-    "A semi-high-speed passenger line is planned from Ahmedabad along the expressway. It is not the freight line, and it is not described as built.",
+  "passenger-rail": place("Sarkhej–Dholera semi high-speed rail", "Approved May 2026", [
+    "The Union Cabinet approved a semi high-speed passenger line from Sarkhej, Ahmedabad, to Dholera in May 2026, about 134 km at about ₹20,667 crore in press reports. Western Railway invited EPC bids in August 2026. It is not the freight line, and nothing is built yet.",
     "Future draws it as a wide brown stroke beside the expressway, so the corridor can be read from above. The offset and the bends are schematic, and the stroke is much wider than a railway. Turn Future off and the line leaves the model.",
   ]),
   "future-grain": place("Later phases", "Not plots", [
     "Town-planning schemes 1 to 6 cover 422 km². Only the 22.54 km² Activation Area has a published list of trunk works.",
-    "The blocks outside that rectangle are a grain, denser on the Phase I bands and thinner on TP3 to TP6. They are not streets, not flats, and not a drawing you can allot from.",
+    "The buildings outside that rectangle are a grain of typologies: glass towers on podiums, residential slabs, low campuses, sawtooth industrial sheds and warehouses on the Phase I bands, and sheds, warehouses and house clusters, more thinly, on TP3 to TP6. The mix is illustrative. They are not streets, not flats, and not a drawing you can allot from.",
   ]),
   rail: place("Bhimnath–Dholera freight line", "Western Railway", [
     "Western Railway is implementing a freight line from Bhimnath to Dholera, to reach the Dedicated Freight Corridor near Ahmedabad. A passenger semi-high-speed line is a separate, planned project along the expressway.",
@@ -354,30 +284,31 @@ export const places = {
   bhavnagar: place("Bhavnagar", "South", [
     "Bhavnagar is the city to the south. The FAQ gives its existing airport as 60 km away, and the expressway’s southern end toward Adhelai. This label is a direction on the model, not the city itself.",
   ]),
-  semicon: place("Semicon City", "Planned district", [
+  semicon: place("Semicon City", "Tata–PSMC fab under construction", [
     "DSIRDA calls the Activation Area a Semicon City under the Gujarat Semiconductor Policy of 2022, for semiconductors, suppliers, and electronics manufacturing.",
-    "The halls are a translucent district so that status stays visible. No company campus is modelled. The policy link is in Sources.",
+    "Tata Electronics, with Taiwan’s PSMC, is building India’s first commercial chip fab here, with a proposed investment of ₹91,000 crore. The Commerce Ministry notified a 66.166 ha SEZ for it in April 2026, on plots in TP Scheme 2A.",
+    "The campus is a generic fab layout: a windowless cleanroom with air handlers and exhaust stacks on the roof, a utility building with cooling towers, offices on a bridge, and gas and water tanks. It is drawn as a solid campus. It is not the fab’s footprint or its design.",
   ]),
   school: place("School", "Initiated", [
-    "DSIRDA says a school up to the 12th standard has been initiated, along with other social buildings. The block is translucent. It has no floor plan.",
+    "DSIRDA says a school up to the 12th standard has been initiated, along with other social buildings. It is drawn as a typical school: a three-floor teaching block and two wings around a courtyard. The shape is generic and has no floor plan.",
   ]),
   hospital: place("Hospital", "Initiated", [
-    "A healthcare facility is among the social projects DSIRDA says have been initiated. The block is translucent, and it has no floor plan and no bed count.",
+    "A healthcare facility is among the social projects DSIRDA says have been initiated. It is drawn as a typical hospital: a diagnostic podium, twin ward blocks and a rooftop helipad. The shape is generic, with no floor plan and no bed count.",
   ]),
   fire: place("Fire station", "Initiated", [
-    "A fire station is one of the social projects already started, with the police station reserved in the land-use plan. Only the fire station is given a mass, and it is translucent.",
+    "A fire station is one of the social projects already started, with the police station reserved in the land-use plan. Only the fire station is drawn: an apparatus hall with three bays, a forecourt, and a hose tower. The shape is generic.",
   ]),
   guesthouse: place("Guest house", "Initiated", [
-    "A guest house is on the list of projects started through allotment or public-private arrangements. Translucent mass, no plan.",
+    "A guest house is on the list of projects started through allotment or public-private arrangements. Drawn as two staggered wings under hipped roofs. Generic shape, no plan.",
   ]),
   hotel: place("Hotel", "Initiated", [
-    "A hotel is on the same initiated list as the guest house. It is a translucent mass beside the commercial tint, not a branded design.",
+    "A hotel is on the same initiated list as the guest house. It is drawn as a podium with a rooftop pool and a finned tower, beside the commercial tint. Generic shape, not a branded design.",
   ]),
   foodcourt: place("Food court", "Initiated", [
-    "A food court is named alongside the school, hospital, and housing as work already started. Small translucent mass.",
+    "A food court is named alongside the school, hospital, and housing as work already started. Drawn as a glass pavilion under a floating roof. Generic shape.",
   ]),
   "residential-blocks": place("Residential blocks", "Initiated", [
-    "Housing for the Activation Area is described as initiated. The bars are translucent so they stay distinct from the roads and plants, which are solid.",
+    "Housing for the Activation Area is described as initiated. Each bar is drawn solid as a retail plinth with three stepped towers, balconies and roof terraces. The massing is an interpretation, not a floor plan.",
     "They are not flats you can count, and they are not plots.",
   ]),
   tp1: place("TP1", "Phase I", [
@@ -404,14 +335,15 @@ export const tourStops = [
   { focus: "arrive", chapter: "arrive", say: "Over the gulf, looking inland at the whole region." },
   { focus: "sir", chapter: "region", say: "The plinth is 920 square kilometres, and it is not the notified line." },
   { focus: "village-dholera", chapter: "villages", say: "Twenty-two village names. Pins are map nodes." },
-  { focus: "expressway", chapter: "connect", say: "The expressway is the new road. NH 751 is the one already there." },
-  { focus: "airport", chapter: "connect", say: "The airport pin is OpenStreetMap. The buildings are a stand-in." },
-  { focus: "solar", chapter: "zones", say: "The solar field sits on the Mahadevpura map node." },
+  { focus: "expressway", chapter: "connect", say: "The expressway opened in March 2026. NH 751 is the older road." },
+  { focus: "airport", chapter: "connect", say: "The airport had its first trial landing in June 2026." },
+  { focus: "solar", chapter: "zones", say: "Tata Power’s 300 MW solar plant, on the Mahadevpura map node." },
   { focus: "tp1", chapter: "plan", say: "Phase I is TP1 and TP2, 153 square kilometres together." },
   { focus: "activation", chapter: "activation", say: "Drop into the 22.54 square kilometre Activation Area." },
   { focus: "canal", chapter: "infrastructure", say: "The canal is 6.6 kilometres, toward the gulf." },
   { focus: "wtp", chapter: "infrastructure", say: "The water plant sits about 5 kilometres off the rectangle." },
   { focus: "sub-torrent", chapter: "infrastructure", say: "Solid yards are the substations described as built." },
+  { focus: "semicon", chapter: "activation", say: "Semicon City. The Tata–PSMC fab SEZ was notified in April 2026." },
   { focus: "bec", chapter: "activation", say: "ABCD. Walk the last stretch from here." },
 ];
 
@@ -449,9 +381,9 @@ export const futureView = {
   kicker: "The published programme",
   title: "Dholera as planned",
   paragraphs: [
-    "Future finishes the masses DSIRDA describes as started: the school, hospital, fire station, food court, guest house, hotel, housing, the GETCO yard, and the Semicon City halls. It also draws two things named in the plan and not built here: a passenger line beside the expressway, and a grain of blocks over the rest of the 422 km².",
-    "The grain is not a master plan. It only says the land outside the Activation Area is meant to become city as later town-planning schemes are approved. Prices, survey numbers, and company campuses stay off this model.",
-    "Turn Future off to restore the split you started with. Solid means the trunk works described as built. Translucent means started or still a plan.",
+    "Future adds the later phases: a passenger line beside the expressway, and a grain of building types over the rest of the 422 km² — towers, housing slabs, campuses, sheds and warehouses. It reads the land still to be planned, not the built Activation Area.",
+    "The grain is not a master plan. It only says the land outside the Activation Area is meant to become city as later town-planning schemes are approved. Prices, survey numbers and company campuses stay off this model.",
+    "Turn Future off to return to the built-out city. Every solid building in the model is an interpretation of the published programme, not a surveyed design.",
   ],
   rows: [
     { id: "aa-roads", status: "Built", title: "Internal roads", text: "About 72 km in the Activation Area. Water, wastewater, ICT, gas, and storm ducts run under them." },
@@ -463,14 +395,14 @@ export const futureView = {
     { id: "sub-torrent", status: "Built", title: "Torrent substations", text: "Two yards, including 400/220 kV GIS with SCADA. 500 MVA, scalable to 1,500." },
     { id: "bec", status: "Built", title: "ABCD", text: "Offices, the City Integrated Operations Center, experience zone, conference, auditorium, banquet, restaurant, bank, and post office across the two buildings." },
     { id: "nh751", status: "Existing", title: "NH 751", text: "Ahmedabad–Bhavnagar highway through the city. Separate from the new expressway." },
-    { id: "expressway", status: "Under way", title: "Expressway", text: "About 109 km, four lanes, access-controlled, NHAI. Ahmedabad to Dholera, not the same road as NH 751." },
-    { id: "airport", status: "Under way", title: "Airport", text: "DIACL: AAI, Government of Gujarat, and NICDIT. About 20 km from Dholera, with a link to the expressway. The pin is still marked under construction." },
+    { id: "expressway", status: "Open", title: "Expressway", text: "About 109 km, four lanes, access-controlled, NHAI. Inaugurated 31 March 2026 in press reports. Not the same road as NH 751." },
+    { id: "airport", status: "Under way", title: "Airport", text: "DIACL: AAI, Government of Gujarat, and NICDIT. About 20 km from Dholera, with a link to the expressway. AAI trial landing on 5 June 2026. No commercial opening date published." },
     { id: "rail", status: "Under way", title: "Freight rail", text: "Western Railway, Bhimnath to Dholera, toward the Dedicated Freight Corridor near Ahmedabad." },
     { id: "sub-getco", status: "Under way", title: "GETCO substation", text: "220 kV, described as being developed. The second power source beside Torrent." },
     { id: "school", status: "Started", title: "Social buildings", text: "School to 12th standard, hospital, fire station, food court, guest house, hotel, and housing are initiated. No bed count is printed." },
-    { id: "solar", status: "Reported", title: "Solar park", text: "300 MW in public project updates. The field is drawn on the Mahadevpura map node. Its edges are schematic." },
-    { id: "passenger-rail", status: "Planned", title: "Passenger rail", text: "Semi-high-speed line planned along the expressway. Shown only while Future is on." },
-    { id: "semicon", status: "Planned", title: "Semicon City", text: "The official name for semiconductors, suppliers, and electronics manufacturing under the 2022 policy. No company campus is modelled." },
+    { id: "solar", status: "Running", title: "Solar park", text: "Tata Power 300 MW, commissioned April 2022. A 4,400 MW park is planned in reference sources. The field is drawn on the Mahadevpura map node." },
+    { id: "passenger-rail", status: "Approved", title: "Semi high-speed rail", text: "Sarkhej–Dholera, approved by the Cabinet in May 2026, EPC bids invited in August 2026. Shown only while Future is on." },
+    { id: "semicon", status: "Under way", title: "Semicon City", text: "Tata–PSMC fab, ₹91,000 crore proposed. A 66.166 ha SEZ was notified in April 2026. The halls are not the fab’s design." },
     { id: "future-grain", status: "Later", title: "TP1–TP6 beyond the Activation Area", text: "422 km² developable. Phase I, TP1 and TP2, is 153 km² together. The rest waits on later town-planning schemes. The grain is not a plot plan." },
     { id: "activation", status: "Note", title: "Earth filling", text: "Plots need about 1.5 to 2 metres of filling, done by the project unless filling is bought as an extra." },
   ],

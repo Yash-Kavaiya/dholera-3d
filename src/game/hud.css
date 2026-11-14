@@ -1,0 +1,1228 @@
+/* ==========================================================================
+   Dholera Rising — City Ops
+   Game HUD styling. Scoped to #game-hud. Matches the site vocabulary:
+   warm paper, ink, copper, 2px corners, Fraunces headings, Outfit body.
+   The guide chrome is hidden only while body.game-on is set.
+   ========================================================================== */
+
+#game-hud {
+  --gh-paper: #f3eee4;
+  --gh-paper-soft: rgba(243, 238, 228, 0.9);
+  --gh-ink: #1c1915;
+  --gh-muted: #6e655b;
+  --gh-copper: #b5693a;
+  --gh-copper-soft: rgba(181, 105, 58, 0.14);
+  --gh-line: #e3d9c8;
+  --gh-teal: #3f93a8;
+  --gh-teal-soft: rgba(63, 147, 168, 0.14);
+  --gh-shadow: 0 18px 44px rgba(40, 32, 20, 0.18);
+  --gh-shadow-soft: 0 8px 22px rgba(40, 32, 20, 0.12);
+
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: none;
+  pointer-events: none;
+  color: var(--gh-ink);
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-weight: 380;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.game-on #game-hud {
+  display: block;
+}
+
+/* Hide the guide/tour chrome while the game is running (hud.css owns this, not
+   shell.css). The minimap and 3D labels stay for orientation. */
+body.game-on #top,
+body.game-on #panel,
+body.game-on #chapters,
+body.game-on #chapter-select,
+body.game-on #arrive,
+body.game-on #hint,
+body.game-on #hud,
+body.game-on #help-modal,
+body.game-on #stats-panel {
+  display: none !important;
+}
+
+body.game-on #labels {
+  opacity: 0.82;
+}
+
+body.dusk #game-hud {
+  --gh-paper: #17191c;
+  --gh-paper-soft: rgba(23, 25, 28, 0.9);
+  --gh-ink: #f3eee4;
+  --gh-muted: #b7aea2;
+  --gh-copper: #d98a55;
+  --gh-copper-soft: rgba(217, 138, 85, 0.18);
+  --gh-line: #2c3034;
+  --gh-teal: #6fc0d2;
+  --gh-teal-soft: rgba(111, 192, 210, 0.16);
+  --gh-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+  --gh-shadow-soft: 0 8px 22px rgba(0, 0, 0, 0.4);
+}
+
+#game-hud *,
+#game-hud *::before,
+#game-hud *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------- top strip */
+
+.gh-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px 0;
+}
+
+.gh-brand {
+  padding: 10px 14px 10px 12px;
+  background: var(--gh-paper-soft);
+  border: 1px solid var(--gh-line);
+  border-left: 3px solid var(--gh-copper);
+  border-radius: 2px;
+  box-shadow: var(--gh-shadow-soft);
+  backdrop-filter: blur(6px);
+}
+
+.gh-brand .gh-kicker {
+  display: block;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gh-copper);
+}
+
+.gh-brand .gh-name {
+  display: block;
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 560;
+  font-size: 22px;
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  margin: 3px 0 2px;
+}
+
+.gh-brand .gh-sub {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--gh-muted);
+}
+
+.gh-meters {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.gh-meter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gh-paper-soft);
+  border: 1px solid var(--gh-line);
+  border-radius: 2px;
+  box-shadow: var(--gh-shadow-soft);
+  backdrop-filter: blur(6px);
+  padding: 8px 12px;
+  min-height: 52px;
+}
+
+.gh-meter-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gh-muted);
+}
+
+.gh-level-meter {
+  min-width: 208px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  justify-content: center;
+}
+
+.gh-level-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.gh-level-chip {
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 640;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--gh-copper);
+}
+
+.gh-xp-label {
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--gh-muted);
+  white-space: nowrap;
+}
+
+.gh-xp-track {
+  height: 4px;
+  border-radius: 0;
+  background: var(--gh-line);
+  overflow: hidden;
+}
+
+.gh-xp-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--gh-copper), #e0a06a);
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gh-credit-meter,
+.gh-shard-meter {
+  min-width: 92px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+}
+
+.gh-meter-value {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+
+.gh-meter-value small {
+  font-size: 10px;
+  color: var(--gh-muted);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.gh-coin {
+  color: var(--gh-copper);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.gh-shard-diamond {
+  width: 10px;
+  height: 10px;
+  background: var(--gh-teal);
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px rgba(63, 147, 168, 0.6);
+  margin-right: 2px;
+}
+
+/* ----------------------------------------------------------- mission card */
+
+.gh-mission {
+  position: absolute;
+  top: 92px;
+  right: 18px;
+  width: 340px;
+  background: var(--gh-paper);
+  border: 1px solid var(--gh-line);
+  border-left: 3px solid var(--gh-copper);
+  border-radius: 2px;
+  box-shadow: var(--gh-shadow);
+  padding: 14px 16px 13px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.gh-mission.gh-mission-done .gh-mission-title {
+  color: var(--gh-teal);
+}
+
+.gh-mission-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.gh-mission-no {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gh-copper);
+}
+
+.gh-badges {
+  display: flex;
+  gap: 5px;
+}
+
+.gh-badge {
+  display: none;
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  padding: 3px 6px;
+  border-radius: 2px;
+  border: 1px solid var(--gh-teal);
+  color: var(--gh-teal);
+  background: var(--gh-teal-soft);
+}
+
+.gh-badge.on {
+  display: inline-block;
+}
+
+.gh-mission-title {
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 560;
+  font-size: 25px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 0 0 7px;
+}
+
+.gh-mission-objective {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.42;
+  color: var(--gh-muted);
+  min-height: 34px;
+}
+
+.gh-mission-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 9px;
+}
+
+.gh-distance {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--gh-copper);
+  font-variant-numeric: tabular-nums;
+}
+
+.gh-prompt {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gh-ink);
+  animation: gh-prompt-pulse 1.6s ease-in-out infinite;
+}
+
+.gh-prompt.on {
+  display: inline-flex;
+}
+
+.gh-prompt kbd {
+  display: inline-block;
+  min-width: 20px;
+  padding: 3px 6px;
+  border: 1px solid var(--gh-copper);
+  border-radius: 2px;
+  background: var(--gh-copper-soft);
+  color: var(--gh-copper);
+  font: 600 10px/1 Outfit, sans-serif;
+  text-align: center;
+}
+
+@keyframes gh-prompt-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.gh-mission-bar {
+  height: 3px;
+  margin-top: 11px;
+  background: var(--gh-line);
+  overflow: hidden;
+}
+
+.gh-mission-bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--gh-copper);
+  transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --------------------------------------------------------------- arrow */
+
+.gh-arrow {
+  --gh-arrow-angle: 0deg;
+  --gh-arrow-x: 0px;
+  --gh-arrow-y: 0px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transform: translate(var(--gh-arrow-x), var(--gh-arrow-y));
+  color: var(--gh-copper);
+  filter: drop-shadow(0 2px 6px rgba(40, 32, 20, 0.35));
+}
+
+.gh-arrow.on {
+  display: flex;
+}
+
+.gh-arrow span {
+  font-size: 27px;
+  line-height: 1;
+  transform: rotate(var(--gh-arrow-angle));
+  transition: transform 0.2s ease-out;
+}
+
+/* ------------------------------------------------------------- controls */
+
+.gh-controls {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 12px;
+  max-width: min(560px, calc(100vw - 380px));
+  padding: 9px 13px;
+  background: var(--gh-paper-soft);
+  border: 1px solid var(--gh-line);
+  border-radius: 2px;
+  box-shadow: var(--gh-shadow-soft);
+  backdrop-filter: blur(6px);
+  font-size: 10.5px;
+  color: var(--gh-muted);
+}
+
+.gh-controls .gh-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.gh-controls kbd {
+  display: inline-block;
+  min-width: 19px;
+  padding: 2px 5px;
+  border: 1px solid var(--gh-line);
+  border-radius: 2px;
+  background: var(--gh-ink);
+  color: var(--gh-paper);
+  font: 600 9.5px/1.3 Outfit, sans-serif;
+  text-align: center;
+}
+
+.gh-controls .gh-key.drive-only {
+  display: none;
+}
+
+.gh-controls.driving .gh-key.drive-only {
+  display: inline-flex;
+}
+
+.gh-controls.driving .gh-key.walk-only {
+  display: none;
+}
+
+/* --------------------------------------------------------------- speed */
+
+.gh-speed {
+  position: absolute;
+  right: 202px;
+  bottom: 22px;
+  display: none;
+  align-items: baseline;
+  gap: 5px;
+  padding: 10px 15px;
+  background: var(--gh-paper-soft);
+  border: 1px solid var(--gh-line);
+  border-radius: 2px;
+  box-shadow: var(--gh-shadow-soft);
+  backdrop-filter: blur(6px);
+}
+
+.gh-speed.on {
+  display: flex;
+}
+
+.gh-speed b {
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 640;
+  font-size: 32px;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  color: var(--gh-copper);
+  font-variant-numeric: tabular-nums;
+  min-width: 52px;
+  text-align: right;
+}
+
+.gh-speed span {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gh-muted);
+}
+
+.gh-speed em {
+  position: absolute;
+  top: -9px;
+  left: 12px;
+  font-style: normal;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gh-teal);
+  background: var(--gh-paper);
+  padding: 2px 5px;
+  border: 1px solid var(--gh-line);
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------- toasts */
+
+.gh-toasts {
+  position: absolute;
+  top: 86px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  width: min(440px, calc(100vw - 30px));
+  pointer-events: none;
+}
+
+.gh-toast {
+  width: max-content;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  background: var(--gh-paper);
+  border: 1px solid var(--gh-line);
+  border-left: 3px solid var(--gh-copper);
+  border-radius: 2px;
+  box-shadow: var(--gh-shadow);
+  font-size: 12.5px;
+  line-height: 1.3;
+  animation: gh-toast-in 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gh-toast.gh-toast-out {
+  animation: gh-toast-out 0.32s ease-in forwards;
+}
+
+.gh-toast .gh-toast-title {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.gh-toast .gh-toast-detail {
+  color: var(--gh-muted);
+  font-size: 11.5px;
+  white-space: nowrap;
+}
+
+.gh-toast.gh-tone-reward {
+  border-left-color: var(--gh-teal);
+  background: var(--gh-paper);
+  padding: 12px 20px;
+}
+
+.gh-toast.gh-tone-reward .gh-toast-title {
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 560;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+
+.gh-toast.gh-tone-reward .gh-toast-detail {
+  color: var(--gh-copper);
+  font-weight: 600;
+  font-size: 12.5px;
+}
+
+@keyframes gh-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes gh-toast-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+/* -------------------------------------------------------------- overlays */
+
+.gh-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(28, 25, 21, 0.56);
+  backdrop-filter: blur(9px);
+  pointer-events: auto;
+  animation: gh-fade-in 0.25s ease-out;
+}
+
+.gh-overlay[hidden] {
+  display: none;
+}
+
+@keyframes gh-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.gh-card {
+  position: relative;
+  width: min(780px, calc(100vw - 40px));
+  max-height: calc(100vh - 44px);
+  overflow: auto;
+  background: var(--gh-paper);
+  color: var(--gh-ink);
+  border: 1px solid var(--gh-line);
+  border-top: 3px solid var(--gh-copper);
+  border-radius: 2px;
+  box-shadow: 0 40px 110px rgba(0, 0, 0, 0.38);
+  padding: 30px 34px 28px;
+  animation: gh-card-in 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gh-card.gh-card-narrow {
+  width: min(520px, calc(100vw - 40px));
+}
+
+@keyframes gh-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.gh-kicker {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gh-copper);
+}
+
+.gh-title {
+  margin: 6px 0 0;
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 560;
+  font-size: clamp(38px, 5.4vw, 62px);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+}
+
+.gh-title-sm {
+  margin: 4px 0 0;
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 560;
+  font-size: 32px;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.gh-title .gh-title-accent {
+  color: var(--gh-copper);
+}
+
+.gh-lede {
+  margin: 14px 0 0;
+  max-width: 58ch;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.gh-muted {
+  color: var(--gh-muted);
+}
+
+.gh-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 18px 0 0;
+}
+
+.gh-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--gh-line);
+  border-radius: 2px;
+  background: var(--gh-copper-soft);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gh-muted);
+}
+
+.gh-chip strong {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 16px;
+  font-weight: 640;
+  letter-spacing: 0;
+  color: var(--gh-copper);
+}
+
+.gh-save-note {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  border-left: 2px solid var(--gh-teal);
+  background: var(--gh-teal-soft);
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--gh-ink);
+}
+
+.gh-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px 22px;
+  margin: 22px 0 0;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--gh-line);
+}
+
+.gh-control-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--gh-muted);
+}
+
+.gh-control-row .gh-keys {
+  display: inline-flex;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.gh-control-row kbd {
+  display: inline-block;
+  min-width: 20px;
+  padding: 3px 6px;
+  border: 1px solid var(--gh-line);
+  border-radius: 2px;
+  background: var(--gh-ink);
+  color: var(--gh-paper);
+  font: 600 10px/1.3 Outfit, sans-serif;
+  text-align: center;
+}
+
+.gh-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 24px;
+  align-items: center;
+}
+
+.gh-btn {
+  font: 500 12.5px/1 Outfit, sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 12px 18px;
+  border: 1px solid var(--gh-line);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--gh-ink);
+  cursor: pointer;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, color 0.16s ease;
+}
+
+.gh-btn:hover,
+.gh-btn:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: var(--gh-shadow-soft);
+  border-color: var(--gh-copper);
+  color: var(--gh-copper);
+  outline: none;
+}
+
+.gh-btn.primary {
+  background: var(--gh-copper);
+  border-color: var(--gh-copper);
+  color: #fffaf4;
+}
+
+.gh-btn.primary:hover,
+.gh-btn.primary:focus-visible {
+  background: #a35d33;
+  color: #fffaf4;
+}
+
+.gh-btn.danger {
+  color: #9a3a28;
+  border-color: rgba(154, 58, 40, 0.4);
+}
+
+.gh-btn.danger:hover,
+.gh-btn.danger:focus-visible {
+  color: #9a3a28;
+  border-color: #9a3a28;
+}
+
+.gh-btn.gh-btn-quiet {
+  border-color: transparent;
+  color: var(--gh-muted);
+}
+
+.gh-btn.gh-btn-quiet:hover {
+  color: var(--gh-copper);
+  border-color: var(--gh-line);
+}
+
+.gh-fineprint {
+  margin: 16px 0 0;
+  font-size: 11px;
+  color: var(--gh-muted);
+  line-height: 1.4;
+}
+
+/* -------------------------------------------------------------- mission log */
+
+.gh-log {
+  margin: 20px 0 0;
+  border-top: 1px solid var(--gh-line);
+}
+
+.gh-log-item {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--gh-line);
+}
+
+.gh-log-item:last-child {
+  border-bottom: 0;
+}
+
+.gh-log-no {
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 640;
+  font-size: 21px;
+  line-height: 1;
+  color: var(--gh-muted);
+}
+
+.gh-log-item.is-active .gh-log-no,
+.gh-log-item.is-done .gh-log-no {
+  color: var(--gh-copper);
+}
+
+.gh-log-item.is-locked {
+  opacity: 0.55;
+}
+
+.gh-log-name {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+.gh-log-brief {
+  margin: 3px 0 0;
+  font-size: 11.5px;
+  line-height: 1.42;
+  color: var(--gh-muted);
+}
+
+.gh-log-reward {
+  margin: 4px 0 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gh-copper);
+}
+
+.gh-status {
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 4px 7px;
+  border: 1px solid var(--gh-line);
+  border-radius: 2px;
+  color: var(--gh-muted);
+  white-space: nowrap;
+}
+
+.gh-status.is-active {
+  color: var(--gh-copper);
+  border-color: var(--gh-copper);
+  background: var(--gh-copper-soft);
+}
+
+.gh-status.is-done {
+  color: var(--gh-teal);
+  border-color: var(--gh-teal);
+  background: var(--gh-teal-soft);
+}
+
+/* ---------------------------------------------------------------- pause */
+
+.gh-pause-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 26px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--gh-line);
+}
+
+.gh-subhead {
+  margin: 0 0 10px;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gh-muted);
+}
+
+.gh-stat-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.gh-stat {
+  border: 1px solid var(--gh-line);
+  border-radius: 2px;
+  padding: 9px 11px;
+  background: var(--gh-copper-soft);
+}
+
+.gh-stat span {
+  display: block;
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--gh-muted);
+}
+
+.gh-stat b {
+  display: block;
+  margin-top: 3px;
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 640;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--gh-copper);
+}
+
+.gh-codex {
+  max-height: 300px;
+  overflow: auto;
+  border: 1px solid var(--gh-line);
+  border-radius: 2px;
+  padding: 2px 12px;
+}
+
+.gh-codex-item {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--gh-line);
+}
+
+.gh-codex-item:last-child {
+  border-bottom: 0;
+}
+
+.gh-codex-item h4 {
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.gh-codex-item h4 span {
+  color: var(--gh-copper);
+  margin-right: 5px;
+}
+
+.gh-codex-item p {
+  margin: 3px 0 0;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--gh-muted);
+}
+
+.gh-pause-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* ----------------------------------------------------------- completion */
+
+.gh-complete {
+  text-align: center;
+  padding: 8px 6px 4px;
+}
+
+.gh-complete .gh-title {
+  font-size: clamp(46px, 6vw, 74px);
+  margin-top: 10px;
+}
+
+.gh-complete .gh-lede {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gh-complete-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 24px 0 0;
+}
+
+.gh-complete-stats .gh-stat {
+  text-align: center;
+}
+
+.gh-complete-actions {
+  display: flex;
+  gap: 9px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 26px;
+}
+
+/* ------------------------------------------------------------- confetti */
+
+.gh-confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gh-confetti span {
+  position: absolute;
+  top: -8vh;
+  left: var(--x);
+  width: 8px;
+  height: 13px;
+  border-radius: 1px;
+  background: var(--c);
+  opacity: 0.92;
+  animation: gh-fall var(--dur) cubic-bezier(0.2, 0.6, 0.4, 1) var(--delay) forwards;
+}
+
+@keyframes gh-fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(120vh) rotate(var(--rot));
+    opacity: 0.85;
+  }
+}
+
+/* ---------------------------------------------------------------- fade */
+
+.gh-fade {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: var(--gh-paper);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.32s ease;
+}
+
+.gh-fade.on {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------ responsive */
+
+@media (max-width: 980px) {
+  .gh-mission {
+    width: min(300px, calc(100vw - 24px));
+    top: 84px;
+    right: 12px;
+    padding: 12px 13px;
+  }
+
+  .gh-mission-title {
+    font-size: 21px;
+  }
+
+  .gh-controls {
+    max-width: calc(100vw - 220px);
+  }
+
+  .gh-speed {
+    right: 110px;
+    bottom: 108px;
+  }
+}
+
+@media (max-width: 720px) {
+  .gh-top {
+    padding: 10px 10px 0;
+    gap: 8px;
+  }
+
+  .gh-brand {
+    padding: 8px 10px;
+  }
+
+  .gh-brand .gh-name {
+    font-size: 18px;
+  }
+
+  .gh-meters {
+    gap: 5px;
+  }
+
+  .gh-meter {
+    padding: 6px 8px;
+    min-height: 44px;
+  }
+
+  .gh-level-meter {
+    min-width: 132px;
+  }
+
+  .gh-credit-meter,
+  .gh-shard-meter {
+    min-width: 66px;
+  }
+
+  .gh-meter-value {
+    font-size: 14px;
+  }
+
+  .gh-mission {
+    top: 78px;
+    width: calc(100vw - 24px);
+    right: 12px;
+  }
+
+  .gh-controls {
+    display: none;
+  }
+
+  .gh-speed {
+    right: 12px;
+    bottom: 194px;
+  }
+
+  .gh-toasts {
+    top: 200px;
+  }
+
+  .gh-card {
+    padding: 22px 20px;
+  }
+
+  .gh-pause-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .gh-complete-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gh-controls-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .gh-log-item {
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+
+  .gh-log-item .gh-status {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
